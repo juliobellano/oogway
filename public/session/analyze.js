@@ -222,4 +222,11 @@ ${stepsText}
   return { init, analyze, renderSteps, getSteps, buildSystemPrompt, startGuidedSession };
 })();
 
-document.addEventListener("DOMContentLoaded", MasterShifu.init);
+// Expose globally so React can call MasterShifu.init() manually
+window.MasterShifu = MasterShifu;
+
+// Auto-init only when loaded as a standalone page (not from React)
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("__session_managed_by_react")) return;
+  MasterShifu.init();
+});

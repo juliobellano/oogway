@@ -852,8 +852,26 @@ function initEventListeners() {
   });
 }
 
-// Initialize
+// Expose a function React can call after it has rendered the DOM shell
+window.initSessionApp = function () {
+  initDOM();
+  initEventListeners();
+  populateMediaDevices();
+  setProactiveCheckStatus("idle");
+  updateStatus("debugInfo", "Application initialized");
+};
+
+// Expose key functions so React components can call them
+window.connect = connect;
+window.disconnect = disconnect;
+window.toggleAudio = toggleAudio;
+window.toggleVideo = toggleVideo;
+window.toggleScreen = toggleScreen;
+
+// Auto-init only when loaded as a standalone page (not from React)
 window.addEventListener("DOMContentLoaded", () => {
+  // If React already rendered the shell it will call initSessionApp() itself
+  if (document.getElementById("__session_managed_by_react")) return;
   initDOM();
   initEventListeners();
   populateMediaDevices();

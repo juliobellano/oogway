@@ -5,6 +5,7 @@ import TextType from './components/TextType';
 import CardNav, { type CardNavItem } from './components/CardNav';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
+import SessionView from './components/SessionView';
 
 const NAV_ITEMS: CardNavItem[] = [
   {
@@ -36,10 +37,23 @@ const NAV_ITEMS: CardNavItem[] = [
   },
 ];
 
+type Phase = 'landing' | 'session';
+
+interface Step {
+  step_number: number;
+  step_name: string;
+  timestamp?: string;
+  description: string;
+  failure_condition?: string;
+}
+
 function App() {
   const [query, setQuery] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [phase, setPhase] = useState<Phase>('landing');
+  const [sessionSteps, setSessionSteps] = useState<Step[]>([]);
+  const [sessionUrl, setSessionUrl] = useState('');
 
   async function handleSubmit(url: string) {
     const trimmed = url.trim();
@@ -73,12 +87,10 @@ function App() {
         return;
       }
 
-      // Store data for the session page to pick up
-      sessionStorage.setItem('masterShifu_steps', JSON.stringify(steps));
-      sessionStorage.setItem('masterShifu_url', trimmed);
-
-      // Navigate to the Gemini Live session page
-      window.location.href = '/session/index.html';
+      // Transition to session phase instead of redirecting
+      setSessionSteps(steps);
+      setSessionUrl(trimmed);
+      setPhase('session');
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(`Request failed: ${message}`);
@@ -87,6 +99,12 @@ function App() {
     }
   }
 
+  // ── Session phase ──
+  if (phase === 'session') {
+    return <SessionView steps={sessionSteps} videoUrl={sessionUrl} />;
+  }
+
+  // ── Landing phase ──
   return (
     <div className="relative min-h-screen bg-[#FAFAF8] overflow-hidden">
       {/* DotGrid Background */}

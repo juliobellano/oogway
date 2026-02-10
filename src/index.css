@@ -214,3 +214,90 @@ input:focus {
     @apply bg-background text-foreground;
   }
 }
+
+/* ── Session View: Chat message labels ── */
+.session-chat .user-transcript:before {
+  content: "YOU (speech): ";
+  font-weight: 600;
+  color: var(--ink);
+  opacity: 0.5;
+}
+.session-chat .user::before {
+  content: "YOU: ";
+  font-weight: 600;
+  color: var(--ink);
+}
+.session-chat .assistant:before {
+  content: "OOGWAY: ";
+  font-weight: 600;
+  color: var(--ink);
+  opacity: 0.7;
+}
+.session-chat .system:before {
+  content: "SYSTEM: ";
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--muted-text);
+}
+.session-chat > div {
+  padding: 6px 0;
+  line-height: 1.5;
+  font-size: 0.875rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* ── Session View: Tutorial step cards ── */
+.tutorial-step {
+  background: white;
+  border: 1px solid #e4e4e7;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  transition: box-shadow 0.2s ease;
+}
+.tutorial-step:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.step-number {
+  background: var(--ink);
+  color: white;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.step-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+.step-timestamp {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted-text);
+  white-space: nowrap;
+}
+.step-description {
+  margin: 4px 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #3f3f46;
+}
+.step-failure {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #dc2626;
+}
+.analyze-loading {
+  color: var(--muted-text);
+  font-style: italic;
+}
+.analyze-error {
+  color: #dc2626;
+}
